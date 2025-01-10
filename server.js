@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 // Import Routes
 const authRoutes = require('./routes/authRoutes');
 const appointmentRoutes = require('./routes/appointmentRoutes');
+const serviceRoutes = require('./routes/serviceRoutes');
 const app = express();
 
 // Middleware
@@ -23,6 +24,7 @@ app.get('/auth', (req, res) => res.send('Welcome to the Express-MongoDB backend!
 // Use the auth routes
 app.use('/api', authRoutes);
 app.use('/api', appointmentRoutes);
+app.use('/api', serviceRoutes);
 
 // Start the server
 const PORT = process.env.PORT || 3100;
