@@ -7,6 +7,10 @@ const mongoose = require('mongoose');
 const authRoutes = require('./routes/authRoutes');
 const appointmentRoutes = require('./routes/appointmentRoutes');
 const serviceRoutes = require('./routes/serviceRoutes');
+const pricingRoutes = require('./routes/pricingRoutes');
+const feedbackRoutes = require('./routes/feedbackRoutes');
+const cashieringRoutes = require('./routes/cashieringRoutes');
+
 const app = express();
 
 // Middleware
@@ -25,6 +29,9 @@ app.get('/auth', (req, res) => res.send('Welcome to the Express-MongoDB backend!
 app.use('/api', authRoutes);
 app.use('/api', appointmentRoutes);
 app.use('/api', serviceRoutes);
+app.use('/api', pricingRoutes);
+app.use('/api', feedbackRoutes);
+app.use('/api', cashieringRoutes);
 
 // Start the server
 const PORT = process.env.PORT || 3100;
