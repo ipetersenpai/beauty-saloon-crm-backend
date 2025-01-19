@@ -43,3 +43,5 @@ app.use('/api', feedbackRoutes);
 app.use('/api', cashieringRoutes);
 app.use('/api', inventoryRoutes);
 
+// Export the app (this is important for Vercel)
+module.exports = app;
