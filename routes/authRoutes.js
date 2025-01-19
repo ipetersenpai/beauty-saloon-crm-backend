@@ -25,19 +25,28 @@ router.post('/login', async (req, res) => {
       return res.status(400).json({ error: 'Invalid credentials' });
     }
 
-    // Generate a JWT token (optional, but recommended for session management)
+    // Create FULL NAME
+    const fullName = `${user.firstname} ${user.middlename || ''} ${user.lastname}`.trim();
+
+    // Generate a JWT token
     const token = jwt.sign(
-      { userId: user._id, email: user.email },
+      {
+        _id: user._id,
+        email: user.email,
+        fullName: fullName,
+        role: user.role
+      },
       process.env.JWT_SECRET_KEY,
-      { expiresIn: '7776000s' }
+      { expiresIn: '7776000s' } // Token expiration
     );
 
-    // Send the token as a response (you can also include user data if necessary)
+    // Send the token as a response
     res.status(200).json({ message: 'Login successful', token });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
+
 
 // User Registration Route
 router.post('/register', async (req, res) => {

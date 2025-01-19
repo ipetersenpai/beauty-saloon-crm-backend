@@ -1,6 +1,8 @@
 // routes/appointmentRoutes.js
 const express = require('express');
 const Appointment = require('../models/appointment/Appointment');
+const Pricing = require('../models/pricing/Pricing');
+const Service = require('../models/service/Service');
 const router = express.Router();
 
 // Create a new appointment
@@ -123,6 +125,70 @@ router.delete('/appointments', async (req, res) => {
                 message: `${result.deletedCount} pending appointments deleted successfully`,
             });
         }
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+
+router.get('/appointments/sales', async (req, res) => {
+    try {
+        const now = new Date();
+        const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        const startOfWeek = new Date(startOfDay);
+        startOfWeek.setDate(startOfDay.getDate() - startOfDay.getDay());
+        const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+
+        const services = await Service.find();
+        const pricingData = await Pricing.find();
+
+        const serviceLookup = services.reduce((acc, service) => {
+            acc[service.serviceName] = service._id.toString();
+            return acc;
+        }, {});
+
+        const pricingLookup = pricingData.reduce((acc, pricing) => {
+            acc[pricing.serviceId.toString()] = pricing.pricing;
+            return acc;
+        }, {});
+
+        const calculateSales = async (startDate) => {
+            const completedAppointments = await Appointment.find({
+                status: 'completed',
+                appointmentDate: { $gte: startDate },
+            });
+
+            console.log('Completed Appointments:', completedAppointments);
+
+            let totalSales = 0;
+            for (const appointment of completedAppointments) {
+                const serviceId = serviceLookup[appointment.selectedService];
+                console.log(`ServiceName: ${appointment.selectedService}, ServiceId: ${serviceId}`);
+                if (serviceId && pricingLookup[serviceId]) {
+                    console.log(`Pricing Found: ${pricingLookup[serviceId]}`);
+                    totalSales += pricingLookup[serviceId];
+                } else {
+                    console.log(`Pricing Missing for ServiceId: ${serviceId}`);
+                }
+            }
+
+            return {
+                totalSales,
+                totalCustomers: completedAppointments.length,
+            };
+        };
+
+        const [dailyData, weeklyData, monthlyData] = await Promise.all([
+            calculateSales(startOfDay),
+            calculateSales(startOfWeek),
+            calculateSales(startOfMonth),
+        ]);
+
+        res.status(200).json({
+            daily: dailyData,
+            weekly: weeklyData,
+            monthly: monthlyData,
+        });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
