@@ -4,13 +4,13 @@ const mongoose = require('mongoose');
 const cors = require('cors'); // Import the cors package
 
 // Import Routes
-const authRoutes = require('./routes/authRoutes');
-const appointmentRoutes = require('./routes/appointmentRoutes');
-const serviceRoutes = require('./routes/serviceRoutes');
-const pricingRoutes = require('./routes/pricingRoutes');
-const feedbackRoutes = require('./routes/feedbackRoutes');
-const cashieringRoutes = require('./routes/cashieringRoutes');
-const inventoryRoutes = require('./routes/inventoryRoutes');
+const authRoutes = require('../routes/authRoutes');
+const appointmentRoutes = require('../routes/appointmentRoutes');
+const serviceRoutes = require('../routes/serviceRoutes');
+const pricingRoutes = require('../routes/pricingRoutes');
+const feedbackRoutes = require('../routes/feedbackRoutes');
+const cashieringRoutes = require('../routes/cashieringRoutes');
+const inventoryRoutes = require('../routes/inventoryRoutes');
 
 const app = express();
 
@@ -43,5 +43,5 @@ app.use('/api', cashieringRoutes);
 app.use('/api', inventoryRoutes);
 
 // Start the server
-// const PORT = process.env.PORT || 3100;
+const PORT = process.env.PORT || 3100;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
