@@ -1,8 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
-const cors = require('cors');
-const path = require('path');
+const cors = require('cors'); // Import the cors package
 
 // Import Routes
 const authRoutes = require('./../routes/authRoutes');
@@ -12,6 +11,7 @@ const pricingRoutes = require('./../routes/pricingRoutes');
 const feedbackRoutes = require('./../routes/feedbackRoutes');
 const cashieringRoutes = require('./../routes/cashieringRoutes');
 const inventoryRoutes = require('./../routes/inventoryRoutes');
+
 
 const app = express();
 
@@ -25,9 +25,6 @@ app.use(
   })
 );
 
-// Static files (if needed)
-app.use(express.static(path.join(__dirname, 'public')));
-
 // MongoDB Connection
 mongoose
   .connect(process.env.DATABASE_URL, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -37,7 +34,7 @@ mongoose
 // Routes
 app.get('/auth', (req, res) => res.send('Welcome to the Express-MongoDB backend!'));
 
-// Use the routes
+// Use the auth routes
 app.use('/api', authRoutes);
 app.use('/api', appointmentRoutes);
 app.use('/api', serviceRoutes);
@@ -46,7 +43,9 @@ app.use('/api', feedbackRoutes);
 app.use('/api', cashieringRoutes);
 app.use('/api', inventoryRoutes);
 
+// Start the server
+// const PORT = process.env.PORT || 3100;
+app.listen(process.env.PORT || 3000, () => {
+  console.log(`Server is running!`);
+});
 
-
-// Export the app (this is important for Vercel)
-module.exports = app;
