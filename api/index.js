@@ -43,9 +43,3 @@ app.use('/api', feedbackRoutes);
 app.use('/api', cashieringRoutes);
 app.use('/api', inventoryRoutes);
 
-// Start the server
-// const PORT = process.env.PORT || 3100;
-app.listen(process.env.PORT || 3000, () => {
-  console.log(`Server is running!`);
-});
-
