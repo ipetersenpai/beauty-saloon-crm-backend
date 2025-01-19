@@ -31,17 +31,20 @@ mongoose
   .catch((err) => console.error('Database connection error:', err));
 
 // Routes
-app.get('/auth', (req, res) => res.send('Welcome to the Express-MongoDB backend!'));
+app.get('/api', (req, res) => res.send('Welcome to the Express-MongoDB backend!'));
 
-// Use the auth routes
-app.use('/api', authRoutes);
-app.use('/api', appointmentRoutes);
-app.use('/api', serviceRoutes);
-app.use('/api', pricingRoutes);
-app.use('/api', feedbackRoutes);
-app.use('/api', cashieringRoutes);
-app.use('/api', inventoryRoutes);
+// Use routes
+app.use('/api/auth', authRoutes);
+app.use('/api/appointments', appointmentRoutes);
+app.use('/api/services', serviceRoutes);
+app.use('/api/pricing', pricingRoutes);
+app.use('/api/feedback', feedbackRoutes);
+app.use('/api/cashiering', cashieringRoutes);
+app.use('/api/inventory', inventoryRoutes);
 
-// Start the server
-// const PORT = process.env.PORT || 3100;
+// Start the server for local dev (use PORT from environment for Vercel)
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+// Export the app for Vercel to use
+module.exports = app;
