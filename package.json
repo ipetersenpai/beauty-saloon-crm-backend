@@ -5,6 +5,9 @@
   "repository": "https://github.com/ipetersenpai/beauty-saloon-crm-backend.git",
   "author": "Peter Francis Robante <robantepeterfran@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "start": "node index.js"
+  },
   "dependencies": {
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
